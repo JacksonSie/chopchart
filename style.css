@@ -30,9 +30,9 @@
   background: #0056b3;
 }
 .chart-container {
-  width: 48%;
+  width: 49%;
+  margin: 1px;
   display: inline-block;
-  margin: 1%;
 }
 canvas {
   max-height: 400px;

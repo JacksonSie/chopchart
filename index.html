@@ -1,81 +1,75 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>股市分析圖表 - 日期篩選</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+    <head>
+        <meta charset="UTF-8" />
+        <title>股市分析圖表 - 日期篩選</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
 
-    <script src="./app.js"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
+        <script src="./app.js"></script>
+        <link rel="stylesheet" href="style.css" />
+    </head>
 
-<body>
-  <!-- 日期篩選控制面板 -->
-  <div class="controls">
-    <div class="date-inputs">
-      <label for="startDate">起始日期:</label>
-      <input type="date" id="startDate">
-      
-      <label for="endDate">結束日期:</label>
-      <input type="date" id="endDate">
-      
-      <button class="filter-btn" onclick="applyDateFilter()">套用篩選</button>
-    </div>
-    
-    <!-- 快速篩選按鈕 -->
-    <div class="quick-filters">
-      <button class="quick-filter-btn" onclick="setQuickFilter(10)">最近10日</button>
-      <button class="quick-filter-btn" onclick="setQuickFilter(20)">最近20日</button>
-      <button class="quick-filter-btn" onclick="setQuickFilter(60)">最近60日</button>
-      <button class="quick-filter-btn" onclick="setQuickFilter(0)">全部資料</button>
-    </div>
-  </div>
+    <body>
+        <!-- 日期篩選控制面板 -->
+        <div class="controls">
+            <div class="date-inputs">
+                <label for="startDate">起始日期:</label>
+                <input type="date" id="startDate" />
 
-  <!-- 圖表容器 -->
-  <div class="chart-container">
-    <canvas id="foreignChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <canvas id="marginChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <canvas id="futuresChart"></canvas>
-  </div>
-  <div class="chart-container">
-    <canvas id="optionsChart"></canvas>
-  </div>
+                <label for="endDate">結束日期:</label>
+                <input type="date" id="endDate" />
 
-  <script>
+                <button class="filter-btn" onclick="applyDateFilter()">套用篩選</button>
+                <!-- 快速篩選按鈕 -->
+                <div class="quick-filters">
+                    <button class="quick-filter-btn" onclick="setQuickFilter(10)">最近10日</button>
+                    <button class="quick-filter-btn" onclick="setQuickFilter(20)">最近20日</button>
+                    <button class="quick-filter-btn" onclick="setQuickFilter(60)">最近60日</button>
+                </div>
+            </div>
+        </div>
 
-  
-    // 全域變數
-    let allData = []; // 儲存所有原始資料
-    let filteredData = []; // 儲存篩選後的資料
-    let charts = {}; // 儲存所有圖表實例
+        <!-- 圖表容器 -->
+        <div class="chart-container">
+            <canvas id="foreignChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="marginChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="futuresChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="optionsChart"></canvas>
+        </div>
 
-    // Google Sheets API 設定，不要動↓↓↓
-    const params = new URLSearchParams(window.location.search);
-    const API_KEY = params.get('key');
-    const SPREADSHEET_ID = '1uPOoATry3Lp6Wh4_Ektc0Oyr6s24XX8QYcTEXT61Gis';
-    const RANGE = '大盤分析表!A:AA';
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    // Google Sheets API 設定，不要動↑↑↑
+        <script>
+            // 全域變數
+            let allData = []; // 儲存所有原始資料
+            let filteredData = []; // 儲存篩選後的資料
+            let charts = {}; // 儲存所有圖表實例
 
+            // Google Sheets API 設定，不要動↓↓↓
+            const params = new URLSearchParams(window.location.search);
+            const API_KEY = params.get("key");
+            const SPREADSHEET_ID = "1uPOoATry3Lp6Wh4_Ektc0Oyr6s24XX8QYcTEXT61Gis";
+            const RANGE = "大盤分析表!A:AA";
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+            // Google Sheets API 設定，不要動↑↑↑
 
-    // 從 Google Sheets 取得資料
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data.values && data.values.length > 0) {
-          processDataAndCreateCharts(data.values);
-        }
-      })
-      .catch(error => {
-        console.error('錯誤:', error);
-        alert('無法載入資料，請檢查網路連線或API金鑰');
-      });
-
-  </script>
-</body>
+            // 從 Google Sheets 取得資料
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.values && data.values.length > 0) {
+                        processDataAndCreateCharts(data.values);
+                    }
+                })
+                .catch((error) => {
+                    console.error("錯誤:", error);
+                    alert("無法載入資料，請檢查網路連線或API金鑰");
+                });
+        </script>
+    </body>
 </html>

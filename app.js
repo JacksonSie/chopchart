@@ -416,13 +416,13 @@ function createOptionsChart(data) {
         data: {
             labels: data.map(d => d.date.length > 10 ? d.date.substring(5) : d.date),
             datasets: [{
-                label: '外資買權',
+                label: '外資買權(億)',
                 data: data.map(d => d.foreignOpCall),
                 backgroundColor: 'rgba(255, 99, 132, 0.7)',
                 yAxisID: 'y'
             }, {
-                label: '外資賣權',
-                data: data.map(d => d.foreignOpPut),
+                label: '外資賣權(*-1)(億)',
+                data: data.map(d => -d.foreignOpPut),
                 backgroundColor: 'rgba(75, 192, 192, 0.7)',
                 yAxisID: 'y'
             }, {
@@ -465,7 +465,7 @@ function createOptionsChart(data) {
                     position: 'right',
                     title: {
                         display: true,
-                        text: '億'
+                        text: '億元'
                     }
                 },
                 y1: {
